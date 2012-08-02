@@ -1,0 +1,22 @@
+/home/madis/Downloads
+
+tab:
+	activePath	/home/madis
+	fullPath	/home/madis/Downloads
+	
+	backButton	
+	forwardButton	
+
+IntelliJ like tab bar
+#InFuture Click on folder name shows subfolders?
+
+Up Button
+Reload iconview dircontent
+
+
+Right mouse click would show menu of all folders inside that folder
+
+Drag&Drop
+
+home dir:
+ self.current_directory = os.path.realpath(os.path.expanduser('~'))
