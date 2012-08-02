@@ -84,10 +84,16 @@ class Toolbar(Gtk.Toolbar):
     if dir_path:
       self.go_to_path(dir_path)
 
-  def on_directory_button_clicked(self, widget, path):
+  def on_directory_button_toggled(self, widget, path):
     if widget.get_active():
-      logger.debug("ONDIRBUTTONCLICKED")
+      logger.debug("on_directory_button_toggled")
       self.go_to_path(path)
+    else:
+    #      Better would be to somehow cancel the event instead
+#      Gtk.signal_emit_stop_by_name (GTK_OBJECT (button), "toggled");
+#      widget.emit_stop_by_name('toggled')
+      widget.set_active(True)
+      return False
 
   def delete_unused_buttons(self):
     for full_path, item in self.path_button_items.iteritems():
@@ -112,7 +118,7 @@ class Toolbar(Gtk.Toolbar):
     #if active element
     if full_path == self.controller.path.current_active_path:
       path_button.set_active(True)
-    path_button.connect("clicked", self.on_directory_button_clicked, full_path)
+    path_button.connect("toggled", self.on_directory_button_toggled, full_path)
     self.path_button_items[full_path] = path_button
     self.add(path_button)
 
