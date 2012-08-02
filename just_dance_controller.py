@@ -1,6 +1,7 @@
+import mimetypes
 import os
 import time
-from gi.repository import Gtk
+from gi.repository import Gtk, Gio
 from path import Path
 
 class JustDanceController(object):
@@ -30,10 +31,16 @@ class JustDanceController(object):
         # Skip hidden files
         if self.is_skip_hidden_files and filename[0] == '.':
           continue
-        if os.path.isdir(os.path.join(self.path.current_active_path, filename)):
+        file_path = os.path.join(self.path.current_active_path, filename)
+        if os.path.isdir(file_path):
           self.icon_view.add_item(filename, Gtk.STOCK_DIRECTORY, True)
         else:
-          self.icon_view.add_item(filename, Gtk.STOCK_FILE, False)
+          mime_type, encoding = mimetypes.guess_type(file_path)
+          if mime_type:
+            icon = Gio.content_type_get_icon(mime_type)
+            self.icon_view.add_with_icon(filename, icon, False)
+          else:
+            self.icon_view.add_item(filename, Gtk.STOCK_FILE, False)
           #     print filename
       self.window.set_number_of_files(len(directory_listing))
     except OSError as oe:

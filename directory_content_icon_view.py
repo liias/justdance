@@ -1,4 +1,5 @@
 from gi.repository import Gtk, GdkPixbuf
+from gi._glib import GError
 import logging
 import time
 
@@ -20,7 +21,7 @@ class DirectoryContentIconView(Gtk.IconView):
     self.set_text_column(self.COLUMN_LABEL)
     self.set_pixbuf_column(self.COLUMN_ICON)
     self.list_store_model.set_sort_column_id(self.COLUMN_LABEL, Gtk.SortType.ASCENDING)
-#    self.list_store_model.set_default_sort_func(lambda x: None)
+    #    self.list_store_model.set_default_sort_func(lambda x: None)
     time_start = time.time()
     self.icon_theme = Gtk.IconTheme.get_default()
     #    self.default_icon = self.icon_theme.lookup_icon("gtk-directory", 16, 0).load_icon()
@@ -32,7 +33,7 @@ class DirectoryContentIconView(Gtk.IconView):
     self.connect("item-activated", self.on_icon_activated)
 
   def on_icon_activated(self, widget, tree_path):
-#    logger.debug("Activated: '%s'" % tree_path)
+  #    logger.debug("Activated: '%s'" % tree_path)
     model = widget.get_model()
     path = model[tree_path][self.COLUMN_LABEL]
     is_directory = model[tree_path][self.COLUMN_IS_DIRECTORY]
@@ -40,7 +41,7 @@ class DirectoryContentIconView(Gtk.IconView):
     if not is_directory:
       self.controller.open_file_in_current_directory(path)
 
-#      os.system('/usr/bin/xdg-open /home/user/Examples/case_Contact.pdf')
+      #      os.system('/usr/bin/xdg-open /home/user/Examples/case_Contact.pdf')
       #      xdg-open
       return
 
@@ -74,4 +75,13 @@ class DirectoryContentIconView(Gtk.IconView):
 
   def add_item(self, text, icon_name, is_directory):
     pixbuf = self.render_icon(icon_name, Gtk.IconSize.DIALOG, None)
+    self.list_store_model.append([text, pixbuf, is_directory])
+
+  def add_with_icon(self, text, icon, is_directory):
+  #    pixbuf = theme.load_icon (((ThemedIcon) icon).get_names ()[0], size, Gtk.IconLookupFlags.USE_BUILTIN);
+    try:
+      pixbuf = self.icon_theme.load_icon(icon.get_names()[0], 48, Gtk.IconLookupFlags.USE_BUILTIN)
+    except GError as e:
+      pixbuf = self.render_icon(Gtk.STOCK_FILE, Gtk.IconSize.DIALOG, None)
+      logger.debug("wrong %s" % e)
     self.list_store_model.append([text, pixbuf, is_directory])
