@@ -86,7 +86,7 @@ class Toolbar(Gtk.Toolbar):
 
   def on_directory_button_clicked(self, widget, path):
     if widget.get_active():
-      logger.warn("ONDIRBUTTONCLICKED")
+      logger.debug("ONDIRBUTTONCLICKED")
       self.go_to_path(path)
 
   def delete_unused_buttons(self):
