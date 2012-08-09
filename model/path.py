@@ -1,6 +1,6 @@
 import logging
 import os
-from path_part import PathPart
+from model.path_part import PathPart
 
 logger = logging.getLogger(__name__)
 
@@ -29,18 +29,8 @@ class Path(object):
   def to_path(parts):
     return os.sep.join(parts)
 
-  def set_last_path_as_previous(self):
-    self.previous_active_path = self.current_active_path
-
-  def generate_current_active_path_parts(self):
-    self.current_active_path_parts = self.generate_path_parts(self.current_active_path)
-
-  def generate_current_full_path_parts(self):
-    self.current_full_path_parts = self.generate_path_parts(self.current_full_path)
-
   @staticmethod
   def generate_path_parts(path):
-  #    path_parts_keybased = {}
     path_parts = Path.to_parts(path)
     indexed_path_parts = []
     for index in range(0, len(path_parts)):
@@ -49,6 +39,15 @@ class Path(object):
       part = PathPart(full_path, path)
       indexed_path_parts.append(part)
     return indexed_path_parts
+
+  def set_last_path_as_previous(self):
+    self.previous_active_path = self.current_active_path
+
+  def generate_current_active_path_parts(self):
+    self.current_active_path_parts = self.generate_path_parts(self.current_active_path)
+
+  def generate_current_full_path_parts(self):
+    self.current_full_path_parts = self.generate_path_parts(self.current_full_path)
 
   def set_current_active_path(self, active_path):
     self.set_last_path_as_previous()

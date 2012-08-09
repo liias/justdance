@@ -85,3 +85,6 @@ class DirectoryContentIconView(Gtk.IconView):
       pixbuf = self.render_icon(Gtk.STOCK_FILE, Gtk.IconSize.DIALOG, None)
       logger.debug("wrong %s" % e)
     self.list_store_model.append([text, pixbuf, is_directory])
+
+  def get_icon_from_mime_type(self, mime_type):
+    return Gio.content_type_get_icon(mime_type)
