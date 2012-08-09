@@ -35,7 +35,11 @@ class Path(object):
     indexed_path_parts = []
     for index in range(0, len(path_parts)):
       path = path_parts[index]
+      if index == 0 and path == "":
+        path = "/"
       full_path = os.sep.join(path_parts[:(index + 1)])
+      if index == 0 and full_path == "":
+        full_path = "/"
       part = PathPart(full_path, path)
       indexed_path_parts.append(part)
     return indexed_path_parts
@@ -68,7 +72,8 @@ class Path(object):
     logger.debug("Active path: '%s'; Full path: '%s'" % (self.current_active_path, self.current_full_path))
 
   def is_parent_of_previous_full_path(self):
-    return self.previous_full_path.startswith(self.current_active_path)
+    #Assumes that current full path is not yet updated and is actually previous full path
+    return self.current_full_path.startswith(self.current_active_path)
 
   # Returns False if no previous path
   def get_previous_path(self):

@@ -1,4 +1,4 @@
-from gi.repository import Gtk, GdkPixbuf
+from gi.repository import Gtk, GdkPixbuf, Gio
 from gi._glib import GError
 import logging
 import time
@@ -47,7 +47,7 @@ class DirectoryContentIconView(Gtk.IconView):
 
     logger.debug("Activated directory with path '%s'" % path)
     #TODO: Move functional code away from toolbar
-    self.controller.window.toolbar.go_to_sub_path(path)
+    self.controller.go_to_sub_path(path)
 
   #    self.current_directory = self.current_directory + os.path.sep + path
 
