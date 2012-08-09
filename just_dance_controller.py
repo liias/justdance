@@ -35,7 +35,7 @@ class JustDanceController(object):
         if os.path.isdir(file_path):
           self.icon_view.add_item(filename, Gtk.STOCK_DIRECTORY, True)
         else:
-          mime_type, encoding = mimetypes.guess_type(file_path)
+          mime_type, encoding = mimetypes.guess_type(file_path, False)
           if mime_type:
             icon = Gio.content_type_get_icon(mime_type)
             self.icon_view.add_with_icon(filename, icon, False)

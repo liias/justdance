@@ -1,13 +1,12 @@
 from gi.repository import Gtk
-import os
-from menubar import MenuBar
-from paned import Paned
-from statusbar import Statusbar
-from toolbar import Toolbar
+from ui.menubar import MenuBar
+from ui.paned import Paned
+from ui.statusbar import Statusbar
+from ui.toolbar import Toolbar
 
 class JustDanceWindow(Gtk.Window):
-  def __init__(self, controller):
-    Gtk.Window.__init__(self, title="Just Dance")
+  def __init__(self, controller, *args, **kwargs):
+    Gtk.Window.__init__(self, title="Just Dance", *args, **kwargs)
     self.controller = controller
     self.main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
     self.main_menu = MenuBar(controller)

@@ -1,5 +1,5 @@
 from gi.repository import Gtk
-from directory_content_scrolled_window import DirectoryContentScrolledWindow
+from ui.scrolled_window import DirectoryContentScrolledWindow
 
 class Paned(Gtk.Paned):
   def __init__(self, controller):
