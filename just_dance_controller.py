@@ -23,8 +23,11 @@ class JustDanceController(object):
 
   def list_dir(self):
     time_start = time.time()
+    self.icon_view.freeze_child_notify()
+    self.icon_view.set_model(None)
     try:
       self.icon_view.clear_items()
+      print "Time for clear items: %s" % (time.time() - time_start)
       directory_listing = os.listdir(self.path.current_active_path)
       for filename in directory_listing:
         # Skip hidden files
@@ -34,15 +37,17 @@ class JustDanceController(object):
         if os.path.isdir(file_path):
           self.icon_view.add_item(filename, Gtk.STOCK_DIRECTORY, True)
         else:
-          mime_type, encoding = mimetypes.guess_type(file_path, False)
-          if mime_type:
-            icon = self.icon_view.get_icon_from_mime_type(mime_type)
-            self.icon_view.add_with_icon(filename, icon, False)
-          else:
-            self.icon_view.add_item(filename, Gtk.STOCK_FILE, False)
+          #mime_type, encoding = mimetypes.guess_type(file_path, False)
+          #if mime_type:
+          #  icon = self.icon_view.get_icon_from_mime_type(mime_type)
+          #  self.icon_view.add_with_icon(filename, icon, False)
+          #else:
+          self.icon_view.add_item(filename, Gtk.STOCK_FILE, False)
       self.window.set_number_of_files(len(directory_listing))
     except OSError as oe:
       print oe
+    self.icon_view.set_model(self.icon_view.list_store_model)
+    self.icon_view.thaw_child_notify()
     print "Time elapsed: %s" % (time.time() - time_start)
 
   def set_current_path(self, path):
